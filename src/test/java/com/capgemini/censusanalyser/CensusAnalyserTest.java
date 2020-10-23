@@ -13,10 +13,16 @@ public class CensusAnalyserTest {
 		int numOfRecords = stateCensusAnalyser.loadStateCensusData(STATE_CENSUS_CSV_FILE);
 		Assert.assertEquals(6, numOfRecords);
 	}
-	
-	@Test(expected = CustomStateCensusAnalyserException.class)
-	public void givenIncorrectCSVFile_ShouldReturnCustomException() throws CustomStateCensusAnalyserException {
-		StateCensusAnalyser stateCensusAnalyser = new StateCensusAnalyser();
-		stateCensusAnalyser.loadStateCensusData(INCORRECT_STATE_CENSUS_CSV_FILE);
+
+	@Test
+	public void givenIncorrectCSVFile_ShouldReturnCustomException() {
+		String exceptionMessage = null;
+		try {
+			StateCensusAnalyser stateCensusAnalyser = new StateCensusAnalyser();
+			stateCensusAnalyser.loadStateCensusData(INCORRECT_STATE_CENSUS_CSV_FILE);
+		} catch(CustomStateCensusAnalyserException e) {
+			exceptionMessage = e.getMessage();
+		}
+		Assert.assertEquals(ExceptionType.STATE_CENSUS_FILE_PROBLEM.toString(), exceptionMessage);
 	}
 }

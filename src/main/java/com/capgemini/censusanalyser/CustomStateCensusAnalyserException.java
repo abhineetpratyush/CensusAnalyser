@@ -1,7 +1,7 @@
 package com.capgemini.censusanalyser;
 
 enum ExceptionType{
-	STATE_CENSUS_FILE_PROBLEM
+	STATE_CENSUS_FILE_PROBLEM, STATE_CENSUS_PARSE_PROBLEM
 }
 
 @SuppressWarnings("serial")
