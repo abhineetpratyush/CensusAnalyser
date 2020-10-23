@@ -10,10 +10,10 @@ import com.opencsv.bean.CsvToBean;
 import com.opencsv.bean.CsvToBeanBuilder;
 
 public class StateCensusAnalyser {
-	public int loadStateCensusData(String csvfilePath) throws CustomStateCensusAnalyserException {
+	public int loadStateCensusData(String csvFilePath) throws CustomStateCensusAnalyserException {
 		try {	
 		Reader reader;
-			reader = Files.newBufferedReader(Paths.get(csvfilePath));
+			reader = Files.newBufferedReader(Paths.get(csvFilePath));
 			CsvToBeanBuilder<CSVStateCensus> csvToBeanBuilder = new CsvToBeanBuilder<>(reader);
 			csvToBeanBuilder.withType(CSVStateCensus.class);
 			csvToBeanBuilder.withIgnoreLeadingWhiteSpace(true);
@@ -30,7 +30,16 @@ public class StateCensusAnalyser {
 		}
 	}
 
-	public int loadStateCodeData(String sTATE_CODE_CSV_FILE) {
-		return 0;
+	public int loadStateCodeData(String csvFilePath) throws IOException{
+		Reader reader;
+		reader = Files.newBufferedReader(Paths.get(csvFilePath));
+		CsvToBeanBuilder<CSVStates> csvToBeanBuilder = new CsvToBeanBuilder<>(reader);
+		csvToBeanBuilder.withType(CSVStates.class);
+		csvToBeanBuilder.withIgnoreLeadingWhiteSpace(true);
+		CsvToBean<CSVStates> csvToBean = csvToBeanBuilder.build();
+		Iterator<CSVStates> csvStateCodeIterator = csvToBean.iterator();
+		Iterable<CSVStates> csvStateCodeIterable = () -> csvStateCodeIterator;
+		int numOfEntries = (int) StreamSupport.stream(csvStateCodeIterable.spliterator(), false).count();
+		return numOfEntries;
 	}
 }
