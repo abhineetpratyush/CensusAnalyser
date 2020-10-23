@@ -29,4 +29,8 @@ public class StateCensusAnalyser {
 			throw new CustomStateCensusAnalyserException(ExceptionType.STATE_CENSUS_PARSE_PROBLEM);
 		}
 	}
+
+	public int loadStateCodeData(String sTATE_CODE_CSV_FILE) {
+		return 0;
+	}
 }
