@@ -10,8 +10,13 @@ import com.opencsv.bean.CsvToBean;
 import com.opencsv.bean.CsvToBeanBuilder;
 
 public class StateCensusAnalyser {
-	public int loadStateCensusData(String csvfilePath) throws IOException {
-		Reader reader = Files.newBufferedReader(Paths.get(csvfilePath));
+	public int loadStateCensusData(String csvfilePath) throws CustomStateCensusAnalyserException {
+		Reader reader;
+		try {
+			reader = Files.newBufferedReader(Paths.get(csvfilePath));
+		} catch (IOException e) {
+			throw new CustomStateCensusAnalyserException(ExceptionType.STATE_CENSUS_FILE_PROBLEM);
+		}
 		CsvToBeanBuilder<CSVStateCensus> csvToBeanBuilder = new CsvToBeanBuilder<>(reader);
 		csvToBeanBuilder.withType(CSVStateCensus.class);
 		csvToBeanBuilder.withIgnoreLeadingWhiteSpace(true);
