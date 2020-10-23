@@ -12,7 +12,7 @@ import com.opencsv.bean.CsvToBeanBuilder;
 public class StateCensusAnalyser {
 	public int loadStateCensusData(String csvFilePath) throws CustomStateCensusAnalyserException {
 		try {	
-		Reader reader;
+			Reader reader;
 			reader = Files.newBufferedReader(Paths.get(csvFilePath));
 			CsvToBeanBuilder<CSVStateCensus> csvToBeanBuilder = new CsvToBeanBuilder<>(reader);
 			csvToBeanBuilder.withType(CSVStateCensus.class);
@@ -30,16 +30,23 @@ public class StateCensusAnalyser {
 		}
 	}
 
-	public int loadStateCodeData(String csvFilePath) throws IOException{
-		Reader reader;
-		reader = Files.newBufferedReader(Paths.get(csvFilePath));
-		CsvToBeanBuilder<CSVStates> csvToBeanBuilder = new CsvToBeanBuilder<>(reader);
-		csvToBeanBuilder.withType(CSVStates.class);
-		csvToBeanBuilder.withIgnoreLeadingWhiteSpace(true);
-		CsvToBean<CSVStates> csvToBean = csvToBeanBuilder.build();
-		Iterator<CSVStates> csvStateCodeIterator = csvToBean.iterator();
-		Iterable<CSVStates> csvStateCodeIterable = () -> csvStateCodeIterator;
-		int numOfEntries = (int) StreamSupport.stream(csvStateCodeIterable.spliterator(), false).count();
-		return numOfEntries;
+	public int loadStateCodeData(String csvFilePath) throws CustomStateCodeAnalyserException{
+		try {
+			Reader reader;
+			reader = Files.newBufferedReader(Paths.get(csvFilePath));
+			CsvToBeanBuilder<CSVStates> csvToBeanBuilder = new CsvToBeanBuilder<>(reader);
+			csvToBeanBuilder.withType(CSVStates.class);
+			csvToBeanBuilder.withIgnoreLeadingWhiteSpace(true);
+			CsvToBean<CSVStates> csvToBean = csvToBeanBuilder.build();
+			Iterator<CSVStates> csvStateCodeIterator = csvToBean.iterator();
+			Iterable<CSVStates> csvStateCodeIterable = () -> csvStateCodeIterator;
+			int numOfEntries = (int) StreamSupport.stream(csvStateCodeIterable.spliterator(), false).count();
+			return numOfEntries;
+		} catch (IOException e) {
+			throw new CustomStateCodeAnalyserException(ExceptionTypeStateCode.STATE_CODE_FILE_PROBLEM);
+		}
+		catch(IllegalStateException e) {
+			throw new CustomStateCodeAnalyserException(ExceptionTypeStateCode.STATE_CODE_PARSE_PROBLEM);
+		}
 	}
 }
