@@ -1,10 +1,8 @@
 package com.capgemini.censusanalyser;
 
 import com.capgemini.opencsvbuilder.*;
-
 import org.junit.Assert;
 import org.junit.Test;
-
 import com.opencsv.bean.HeaderColumnNameMappingStrategy;
 import com.opencsv.bean.MappingStrategy;
 
