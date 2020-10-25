@@ -12,10 +12,11 @@ public class StateCensusAnalyser {
 	public int loadStateCensusData(String csvFilePath, MappingStrategy<CSVStateCensus> mappingStrategy, Class<? extends CSVStateCensus> csvBinderClass, final char separator) throws CustomStateCensusAnalyserException {
 		try (Reader reader = Files.newBufferedReader(Paths.get(csvFilePath))){	
 			Iterator<CSVStateCensus> csvStateCensusIterator;
+			ICSVBuilder csvBuilder = new CSVBuilderFactory().createCSVBuilder();
 			if(csvBinderClass != null)
-				csvStateCensusIterator = new OpenCSVBuilder().getCSVFileIterator(reader, CSVStateCensus.class, mappingStrategy, separator);
+				csvStateCensusIterator = csvBuilder.getCSVFileIterator(reader, CSVStateCensus.class, mappingStrategy, separator);
 			else
-				csvStateCensusIterator = new OpenCSVBuilder().getCSVFileIterator(reader, null, null, separator);
+				csvStateCensusIterator = csvBuilder.getCSVFileIterator(reader, null, null, separator);
 			return getCount(csvStateCensusIterator);
 		} catch (IOException e) {
 			throw new CustomStateCensusAnalyserException(ExceptionType.STATE_CENSUS_FILE_PROBLEM);
@@ -29,10 +30,11 @@ public class StateCensusAnalyser {
 	public int loadStateCodeData(String csvFilePath, MappingStrategy<CSVStates> mappingStrategy, Class<? extends CSVStates> csvBinderClass, final char separator) throws CustomStateCodeAnalyserException {
 		try (Reader reader = Files.newBufferedReader(Paths.get(csvFilePath))){	
 			Iterator<CSVStates> csvStateCodeIterator;
+			ICSVBuilder csvBuilder = new CSVBuilderFactory().createCSVBuilder();
 			if(csvBinderClass != null)
-				csvStateCodeIterator = new OpenCSVBuilder().getCSVFileIterator(reader, CSVStates.class, mappingStrategy, separator);
+				csvStateCodeIterator = csvBuilder.getCSVFileIterator(reader, CSVStates.class, mappingStrategy, separator);
 			else
-				csvStateCodeIterator = new OpenCSVBuilder().getCSVFileIterator(reader, null, null, separator);
+				csvStateCodeIterator = csvBuilder.getCSVFileIterator(reader, null, null, separator);
 			return getCount(csvStateCodeIterator);
 		} catch (IOException e) {
 			throw new CustomStateCodeAnalyserException(ExceptionTypeStateCode.STATE_CODE_FILE_PROBLEM);
