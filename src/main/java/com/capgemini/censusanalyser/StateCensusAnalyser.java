@@ -6,9 +6,6 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.Iterator;
 import java.util.stream.StreamSupport;
-
-import com.opencsv.bean.CsvToBean;
-import com.opencsv.bean.CsvToBeanBuilder;
 import com.opencsv.bean.MappingStrategy;
 
 public class StateCensusAnalyser {
@@ -16,9 +13,9 @@ public class StateCensusAnalyser {
 		try (Reader reader = Files.newBufferedReader(Paths.get(csvFilePath))){	
 			Iterator<CSVStateCensus> csvStateCensusIterator;
 			if(csvBinderClass != null)
-				csvStateCensusIterator = getCSVFileIterator(reader, CSVStateCensus.class, mappingStrategy, separator);
+				csvStateCensusIterator = new OpenCSVBuilder().getCSVFileIterator(reader, CSVStateCensus.class, mappingStrategy, separator);
 			else
-				csvStateCensusIterator = getCSVFileIterator(reader, null, null, separator);
+				csvStateCensusIterator = new OpenCSVBuilder().getCSVFileIterator(reader, null, null, separator);
 			return getCount(csvStateCensusIterator);
 		} catch (IOException e) {
 			throw new CustomStateCensusAnalyserException(ExceptionType.STATE_CENSUS_FILE_PROBLEM);
@@ -33,9 +30,9 @@ public class StateCensusAnalyser {
 		try (Reader reader = Files.newBufferedReader(Paths.get(csvFilePath))){	
 			Iterator<CSVStates> csvStateCodeIterator;
 			if(csvBinderClass != null)
-				csvStateCodeIterator = getCSVFileIterator(reader, CSVStates.class, mappingStrategy, separator);
+				csvStateCodeIterator = new OpenCSVBuilder().getCSVFileIterator(reader, CSVStates.class, mappingStrategy, separator);
 			else
-				csvStateCodeIterator = getCSVFileIterator(reader, null, null, separator);
+				csvStateCodeIterator = new OpenCSVBuilder().getCSVFileIterator(reader, null, null, separator);
 			return getCount(csvStateCodeIterator);
 		} catch (IOException e) {
 			throw new CustomStateCodeAnalyserException(ExceptionTypeStateCode.STATE_CODE_FILE_PROBLEM);
@@ -50,15 +47,5 @@ public class StateCensusAnalyser {
 		Iterable<E> csvIterable = () -> iterator;
 		int numOfEntries = (int) StreamSupport.stream(csvIterable.spliterator(), false).count();
 		return numOfEntries;
-	}
-	
-	private <E> Iterator<E> getCSVFileIterator(Reader reader, Class<E> csvClass, MappingStrategy<E> mappingStrategy, final char separator){
-		CsvToBeanBuilder<E> csvToBeanBuilder = new CsvToBeanBuilder<>(reader);
-		csvToBeanBuilder.withMappingStrategy(mappingStrategy);
-		csvToBeanBuilder.withType(csvClass);
-		csvToBeanBuilder.withIgnoreLeadingWhiteSpace(true);
-		csvToBeanBuilder.withSeparator(separator);
-		CsvToBean<E> csvToBean = csvToBeanBuilder.build();
-		return csvToBean.iterator();
 	}
 }
