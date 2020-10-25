@@ -109,9 +109,14 @@ public class StateCensusAnalyser {
 	}
 
 	public String getPopulationDensityWiseCensusDataAndWriteToJsonFile(
-			String jSON_FILE_PATH_TO_WRITE_SORTED_BY_POPULATION_DENSITY) {
-		// TODO Auto-generated method stub
-		return null;
+			String jsonFilePath) throws IOException {
+		FileWriter fileWriter = new FileWriter(jsonFilePath);
+		Comparator<CSVStateCensus> censusComparator = Comparator.comparing(census -> census.densityPerSqKm);
+		this.sortDescending(censusComparator);
+		String sortedStateCensus = new Gson().toJson(csvStateCensusList);
+		fileWriter.write(sortedStateCensus);
+		fileWriter.close();
+		return sortedStateCensus;
 	}
 }
 
