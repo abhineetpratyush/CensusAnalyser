@@ -6,17 +6,21 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.Iterator;
 import java.util.stream.StreamSupport;
+
 import com.opencsv.bean.CsvToBean;
 import com.opencsv.bean.CsvToBeanBuilder;
+import com.opencsv.bean.MappingStrategy;
 
 public class StateCensusAnalyser {
-	public int loadStateCensusData(String csvFilePath) throws CustomStateCensusAnalyserException {
+	public int loadStateCensusData(String csvFilePath, MappingStrategy<CSVStateCensus> mappingStrategy, Class<? extends CSVStateCensus> csvBinderClass, final char separator) throws CustomStateCensusAnalyserException {
 		try {	
 			Reader reader;
 			reader = Files.newBufferedReader(Paths.get(csvFilePath));
 			CsvToBeanBuilder<CSVStateCensus> csvToBeanBuilder = new CsvToBeanBuilder<>(reader);
-			csvToBeanBuilder.withType(CSVStateCensus.class);
+			csvToBeanBuilder.withMappingStrategy(mappingStrategy);
+			csvToBeanBuilder.withType(csvBinderClass);
 			csvToBeanBuilder.withIgnoreLeadingWhiteSpace(true);
+			csvToBeanBuilder.withSeparator(separator);
 			CsvToBean<CSVStateCensus> csvToBean = csvToBeanBuilder.build();
 			Iterator<CSVStateCensus> csvStateCensusIterator = csvToBean.iterator();
 			Iterable<CSVStateCensus> csvStateCensusIterable = () -> csvStateCensusIterator;
@@ -24,19 +28,22 @@ public class StateCensusAnalyser {
 			return numOfEntries;
 		} catch (IOException e) {
 			throw new CustomStateCensusAnalyserException(ExceptionType.STATE_CENSUS_FILE_PROBLEM);
-		}
-		catch(IllegalStateException e) {
+		} catch(IllegalStateException e) {
 			throw new CustomStateCensusAnalyserException(ExceptionType.STATE_CENSUS_PARSE_PROBLEM);
+		} catch(RuntimeException e) {
+			throw new CustomStateCensusAnalyserException(ExceptionType.STATE_CENSUS_HEADER_OR_DELIMITER_PROBLEM);
 		}
 	}
 
-	public int loadStateCodeData(String csvFilePath) throws CustomStateCodeAnalyserException{
-		try {
+	public int loadStateCodeData(String csvFilePath, MappingStrategy<CSVStates> mappingStrategy, Class<? extends CSVStates> csvBinderClass, final char separator) throws CustomStateCodeAnalyserException {
+		try {	
 			Reader reader;
 			reader = Files.newBufferedReader(Paths.get(csvFilePath));
 			CsvToBeanBuilder<CSVStates> csvToBeanBuilder = new CsvToBeanBuilder<>(reader);
-			csvToBeanBuilder.withType(CSVStates.class);
+			csvToBeanBuilder.withMappingStrategy(mappingStrategy);
+			csvToBeanBuilder.withType(csvBinderClass);
 			csvToBeanBuilder.withIgnoreLeadingWhiteSpace(true);
+			csvToBeanBuilder.withSeparator(separator);
 			CsvToBean<CSVStates> csvToBean = csvToBeanBuilder.build();
 			Iterator<CSVStates> csvStateCodeIterator = csvToBean.iterator();
 			Iterable<CSVStates> csvStateCodeIterable = () -> csvStateCodeIterator;
@@ -44,9 +51,10 @@ public class StateCensusAnalyser {
 			return numOfEntries;
 		} catch (IOException e) {
 			throw new CustomStateCodeAnalyserException(ExceptionTypeStateCode.STATE_CODE_FILE_PROBLEM);
-		}
-		catch(IllegalStateException e) {
+		} catch(IllegalStateException e) {
 			throw new CustomStateCodeAnalyserException(ExceptionTypeStateCode.STATE_CODE_PARSE_PROBLEM);
+		} catch(RuntimeException e) {
+			throw new CustomStateCodeAnalyserException(ExceptionTypeStateCode.STATE_CODE_HEADER_OR_DELIMITER_PROBLEM);
 		}
 	}
 }

@@ -8,5 +8,10 @@ public class CSVStates {
 
 	@CsvBindByName(column = "Code", required = true)
 	public String code;
+
+	@Override
+	public String toString() {
+		return "CSVStates [state=" + state + ", code=" + code + "]";
+	}
 }
 
