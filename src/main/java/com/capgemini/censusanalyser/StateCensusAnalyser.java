@@ -62,6 +62,19 @@ public class StateCensusAnalyser {
 			}
 		}
 	}
+	
+	private void sortDescending(Comparator<CSVStateCensus> censusComparator) {
+		for(int i = 0; i < csvStateCensusList.size(); i++) {
+			for(int j = 0; j < csvStateCensusList.size() - i- 1; j++) {
+				CSVStateCensus censusOne = csvStateCensusList.get(j);
+				CSVStateCensus censusTwo = csvStateCensusList.get(j + 1);
+				if(censusComparator.compare(censusOne, censusTwo) < 0) {
+					csvStateCensusList.set(j, censusTwo);
+					csvStateCensusList.set(j + 1, censusOne);
+				}
+			}
+		}
+	}
 
 	public String getAlpahebeticalStateCodeWiseData() {
 		Comparator<CSVStates> codeComparator = Comparator.comparing(codelist -> codelist.code);
@@ -85,7 +98,9 @@ public class StateCensusAnalyser {
 	}
 
 	public String getPopulationWiseCensusData() {
-		// TODO Auto-generated method stub
-		return null;
+		Comparator<CSVStateCensus> censusComparator = Comparator.comparing(census -> census.population);
+		this.sortDescending(censusComparator);
+		String sortedStateCensus = new Gson().toJson(csvStateCensusList);
+		return sortedStateCensus;
 	}
 }
