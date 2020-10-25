@@ -1,6 +1,7 @@
 package com.capgemini.censusanalyser;
 
-import com.capgemini.opencsvbuilder.*;
+import com.capgemini.commoncsvbuilder.*;
+
 import java.io.IOException;
 import java.io.Reader;
 import java.nio.file.Files;
