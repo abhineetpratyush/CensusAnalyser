@@ -13,8 +13,7 @@ import com.opencsv.bean.MappingStrategy;
 
 public class StateCensusAnalyser {
 	public int loadStateCensusData(String csvFilePath, MappingStrategy<CSVStateCensus> mappingStrategy, Class<? extends CSVStateCensus> csvBinderClass, final char separator) throws CustomStateCensusAnalyserException {
-		try {	
-			Reader reader = Files.newBufferedReader(Paths.get(csvFilePath));
+		try (Reader reader = Files.newBufferedReader(Paths.get(csvFilePath))){	
 			Iterator<CSVStateCensus> csvStateCensusIterator;
 			if(csvBinderClass != null)
 				csvStateCensusIterator = getCSVFileIterator(reader, CSVStateCensus.class, mappingStrategy, separator);
@@ -33,8 +32,7 @@ public class StateCensusAnalyser {
 	}
 
 	public int loadStateCodeData(String csvFilePath, MappingStrategy<CSVStates> mappingStrategy, Class<? extends CSVStates> csvBinderClass, final char separator) throws CustomStateCodeAnalyserException {
-		try {	
-			Reader reader = Files.newBufferedReader(Paths.get(csvFilePath));
+		try (Reader reader = Files.newBufferedReader(Paths.get(csvFilePath))){	
 			Iterator<CSVStates> csvStateCodeIterator;
 			if(csvBinderClass != null)
 				csvStateCodeIterator = getCSVFileIterator(reader, CSVStates.class, mappingStrategy, separator);
