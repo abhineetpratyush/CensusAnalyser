@@ -19,9 +19,7 @@ public class StateCensusAnalyser {
 				csvStateCensusIterator = getCSVFileIterator(reader, CSVStateCensus.class, mappingStrategy, separator);
 			else
 				csvStateCensusIterator = getCSVFileIterator(reader, null, null, separator);
-			Iterable<CSVStateCensus> csvStateCensusIterable = () -> csvStateCensusIterator;
-			int numOfEntries = (int) StreamSupport.stream(csvStateCensusIterable.spliterator(), false).count();
-			return numOfEntries;
+			return getCount(csvStateCensusIterator);
 		} catch (IOException e) {
 			throw new CustomStateCensusAnalyserException(ExceptionType.STATE_CENSUS_FILE_PROBLEM);
 		} catch(IllegalStateException e) {
@@ -38,9 +36,7 @@ public class StateCensusAnalyser {
 				csvStateCodeIterator = getCSVFileIterator(reader, CSVStates.class, mappingStrategy, separator);
 			else
 				csvStateCodeIterator = getCSVFileIterator(reader, null, null, separator);
-			Iterable<CSVStates> csvStateCodeIterable = () -> csvStateCodeIterator;
-			int numOfEntries = (int) StreamSupport.stream(csvStateCodeIterable.spliterator(), false).count();
-			return numOfEntries;
+			return getCount(csvStateCodeIterator);
 		} catch (IOException e) {
 			throw new CustomStateCodeAnalyserException(ExceptionTypeStateCode.STATE_CODE_FILE_PROBLEM);
 		} catch(IllegalStateException e) {
@@ -49,7 +45,13 @@ public class StateCensusAnalyser {
 			throw new CustomStateCodeAnalyserException(ExceptionTypeStateCode.STATE_CODE_HEADER_OR_DELIMITER_PROBLEM);
 		}
 	}
-
+	
+	private <E> int getCount(Iterator<E> iterator) {
+		Iterable<E> csvIterable = () -> iterator;
+		int numOfEntries = (int) StreamSupport.stream(csvIterable.spliterator(), false).count();
+		return numOfEntries;
+	}
+	
 	private <E> Iterator<E> getCSVFileIterator(Reader reader, Class<E> csvClass, MappingStrategy<E> mappingStrategy, final char separator){
 		CsvToBeanBuilder<E> csvToBeanBuilder = new CsvToBeanBuilder<>(reader);
 		csvToBeanBuilder.withMappingStrategy(mappingStrategy);
