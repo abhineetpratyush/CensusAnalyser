@@ -6,5 +6,5 @@ import com.opencsv.bean.MappingStrategy;
 
 public interface ICSVBuilder {
 	public Iterator getCSVFileIterator(Reader reader, Class csvBinderClass,
-			MappingStrategy mappingStrategy, final char separator);
+			MappingStrategy mappingStrategy, final char separator) throws CustomCSVBuilderException;
 }

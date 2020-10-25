@@ -9,7 +9,7 @@ import java.util.stream.StreamSupport;
 import com.opencsv.bean.MappingStrategy;
 
 public class StateCensusAnalyser {
-	public int loadStateCensusData(String csvFilePath, MappingStrategy<CSVStateCensus> mappingStrategy, Class<? extends CSVStateCensus> csvBinderClass, final char separator) throws CustomStateCensusAnalyserException {
+	public int loadStateCensusData(String csvFilePath, MappingStrategy<CSVStateCensus> mappingStrategy, Class<? extends CSVStateCensus> csvBinderClass, final char separator) throws CustomFileIOException, CustomCSVBuilderException {
 		try (Reader reader = Files.newBufferedReader(Paths.get(csvFilePath))){	
 			Iterator<CSVStateCensus> csvStateCensusIterator;
 			ICSVBuilder csvBuilder = new CSVBuilderFactory().createCSVBuilder();
@@ -19,15 +19,11 @@ public class StateCensusAnalyser {
 				csvStateCensusIterator = csvBuilder.getCSVFileIterator(reader, null, null, separator);
 			return getCount(csvStateCensusIterator);
 		} catch (IOException e) {
-			throw new CustomStateCensusAnalyserException(ExceptionType.STATE_CENSUS_FILE_PROBLEM);
-		} catch(IllegalStateException e) {
-			throw new CustomStateCensusAnalyserException(ExceptionType.STATE_CENSUS_PARSE_PROBLEM);
-		} catch(RuntimeException e) {
-			throw new CustomStateCensusAnalyserException(ExceptionType.STATE_CENSUS_HEADER_OR_DELIMITER_PROBLEM);
-		}
+			throw new CustomFileIOException(ExceptionTypeIO.FILE_PROBLEM);
+		} 
 	}
 
-	public int loadStateCodeData(String csvFilePath, MappingStrategy<CSVStates> mappingStrategy, Class<? extends CSVStates> csvBinderClass, final char separator) throws CustomStateCodeAnalyserException {
+	public int loadStateCodeData(String csvFilePath, MappingStrategy<CSVStates> mappingStrategy, Class<? extends CSVStates> csvBinderClass, final char separator) throws CustomFileIOException, CustomCSVBuilderException {
 		try (Reader reader = Files.newBufferedReader(Paths.get(csvFilePath))){	
 			Iterator<CSVStates> csvStateCodeIterator;
 			ICSVBuilder csvBuilder = new CSVBuilderFactory().createCSVBuilder();
@@ -37,12 +33,8 @@ public class StateCensusAnalyser {
 				csvStateCodeIterator = csvBuilder.getCSVFileIterator(reader, null, null, separator);
 			return getCount(csvStateCodeIterator);
 		} catch (IOException e) {
-			throw new CustomStateCodeAnalyserException(ExceptionTypeStateCode.STATE_CODE_FILE_PROBLEM);
-		} catch(IllegalStateException e) {
-			throw new CustomStateCodeAnalyserException(ExceptionTypeStateCode.STATE_CODE_PARSE_PROBLEM);
-		} catch(RuntimeException e) {
-			throw new CustomStateCodeAnalyserException(ExceptionTypeStateCode.STATE_CODE_HEADER_OR_DELIMITER_PROBLEM);
-		}
+			throw new CustomFileIOException(ExceptionTypeIO.FILE_PROBLEM);
+		} 
 	}
 	
 	private <E> int getCount(Iterator<E> iterator) {

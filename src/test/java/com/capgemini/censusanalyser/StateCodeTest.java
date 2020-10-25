@@ -12,7 +12,7 @@ public class StateCodeTest {
 	private final String INCORRECT_HEADER_STATE_CODE_CSV_FILE = "./src/main/resources/StateCodeCSVDataIncorrectHeader.csv";
 
 	@Test
-	public void givenTheStatesCodeCSVFile_WhenRead_NoOfRecordsShouldMatch() throws CustomStateCodeAnalyserException  {
+	public void givenTheStatesCodeCSVFile_WhenRead_NoOfRecordsShouldMatch() throws  CustomCSVBuilderException, CustomFileIOException  {
 		StateCensusAnalyser stateCensusAnalyser = new StateCensusAnalyser();
 		MappingStrategy<CSVStates> mappingStrategy = new HeaderColumnNameMappingStrategy<CSVStates>();
 		mappingStrategy.setType(CSVStates.class);
@@ -21,56 +21,56 @@ public class StateCodeTest {
 	}
 
 	@Test
-	public void givenIncorrectCSVFile_ShouldReturnCustomException() {
+	public void givenIncorrectCSVFile_ShouldReturnCustomException() throws CustomCSVBuilderException {
 		String exceptionMessage = null;
 		try {
 			StateCensusAnalyser stateCensusAnalyser = new StateCensusAnalyser();
 			MappingStrategy<CSVStates> mappingStrategy = new HeaderColumnNameMappingStrategy<CSVStates>();
 			mappingStrategy.setType(CSVStates.class);
 			stateCensusAnalyser.loadStateCodeData(INCORRECT_STATE_CODE_CSV_FILE, mappingStrategy, CSVStates.class, ',');
-		} catch(CustomStateCodeAnalyserException e) {
+		} catch(CustomFileIOException e) {
 			exceptionMessage = e.getMessage();
 		}
-		Assert.assertEquals(ExceptionTypeStateCode.STATE_CODE_FILE_PROBLEM.toString(), exceptionMessage);
+		Assert.assertEquals(ExceptionType.FILE_PROBLEM.toString(), exceptionMessage);
 	}
 	
 	@Test
-	public void givenIncorrectCSVType_ShouldReturnCustomException() {
+	public void givenIncorrectCSVType_ShouldReturnCustomException() throws CustomFileIOException {
 		String exceptionMessage = null;
 		try {
 			StateCensusAnalyser stateCensusAnalyser = new StateCensusAnalyser();
 			stateCensusAnalyser.loadStateCodeData(STATE_CODE_CSV_FILE, null, null, ',');
-		} catch(CustomStateCodeAnalyserException e) {
+		} catch(CustomCSVBuilderException e) {
 			exceptionMessage = e.getMessage();
 		}
-		Assert.assertEquals(ExceptionTypeStateCode.STATE_CODE_PARSE_PROBLEM.toString(), exceptionMessage);
+		Assert.assertEquals(ExceptionType.PARSE_PROBLEM.toString(), exceptionMessage);
 	}
 	
 	@Test
-	public void givenCorrectCSVFileIncorrectDelimiter_ShouldReturnCustomException() {
+	public void givenCorrectCSVFileIncorrectDelimiter_ShouldReturnCustomException() throws CustomFileIOException {
 		String exceptionMessage = null;
 		try {
 			StateCensusAnalyser stateCensusAnalyser = new StateCensusAnalyser();
 			MappingStrategy<CSVStates> mappingStrategy = new HeaderColumnNameMappingStrategy<CSVStates>();
 			mappingStrategy.setType(CSVStates.class);
 			stateCensusAnalyser.loadStateCodeData(STATE_CODE_CSV_FILE, mappingStrategy, CSVStates.class, '|');
-		} catch(CustomStateCodeAnalyserException e) {
+		} catch(CustomCSVBuilderException e) {
 			exceptionMessage = e.getMessage();
 		}
-		Assert.assertEquals(ExceptionTypeStateCode.STATE_CODE_HEADER_OR_DELIMITER_PROBLEM.toString(), exceptionMessage);
+		Assert.assertEquals(ExceptionType.HEADER_OR_DELIMITER_PROBLEM.toString(), exceptionMessage);
 	}
 	
 	@Test
-	public void givenCorrectCSVFileIncorrectHeader_ShouldReturnCustomException() {
+	public void givenCorrectCSVFileIncorrectHeader_ShouldReturnCustomException() throws CustomFileIOException {
 		String exceptionMessage = null;
 		try {
 			StateCensusAnalyser stateCensusAnalyser = new StateCensusAnalyser();
 			MappingStrategy<CSVStates> mappingStrategy = new HeaderColumnNameMappingStrategy<CSVStates>();
 			mappingStrategy.setType(CSVStates.class);
 			stateCensusAnalyser.loadStateCodeData(INCORRECT_HEADER_STATE_CODE_CSV_FILE, mappingStrategy, CSVStates.class, ',');
-		} catch(CustomStateCodeAnalyserException e) {
+		} catch(CustomCSVBuilderException e) {
 			exceptionMessage = e.getMessage();
 		}
-		Assert.assertEquals(ExceptionTypeStateCode.STATE_CODE_HEADER_OR_DELIMITER_PROBLEM.toString(), exceptionMessage);
+		Assert.assertEquals(ExceptionType.HEADER_OR_DELIMITER_PROBLEM.toString(), exceptionMessage);
 	}
 }	
