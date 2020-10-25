@@ -107,6 +107,12 @@ public class StateCensusAnalyser {
 		fileWriter.close();
 		return sortedStateCensus;
 	}
+
+	public String getPopulationDensityWiseCensusDataAndWriteToJsonFile(
+			String jSON_FILE_PATH_TO_WRITE_SORTED_BY_POPULATION_DENSITY) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }
 
 
