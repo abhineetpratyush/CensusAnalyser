@@ -83,4 +83,9 @@ public class StateCensusAnalyser {
 		}
 		
 	}
+
+	public String getPopulationWiseCensusData() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }
