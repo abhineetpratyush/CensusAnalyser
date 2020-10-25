@@ -16,6 +16,7 @@ public class CensusAnalyserTest {
 	private final String INCORRECT_HEADER_STATE_CENSUS_CSV_FILE = "./src/main/resources/StateCensusCSVDataIncorrectHeader.csv";
 	private final String JSON_FILE_PATH_TO_WRITE_SORTED_BY_POPULATION_DATA = "./src/main/resources/StateCensusDataSortedByPopulation.json";
 	private final String JSON_FILE_PATH_TO_WRITE_SORTED_BY_POPULATION_DENSITY = "./src/main/resources/StateCensusDataSortedByPopulationDensity.json";
+	private final String JSON_FILE_PATH_TO_WRITE_SORTED_BY_AREA = "./src/main/resources/StateCensusDataSortedByArea.json";
 	
 	@Test
 	public void givenTheStatesCensusCSVFile_WhenRead_NoOfRecordsShouldMatch() throws CustomFileIOException, CustomCSVBuilderException  {
@@ -111,5 +112,16 @@ public class CensusAnalyserTest {
 		String sortedCensusData = stateCensusAnalyser.getPopulationDensityWiseCensusDataAndWriteToJsonFile(JSON_FILE_PATH_TO_WRITE_SORTED_BY_POPULATION_DENSITY);
 		CSVStateCensus[] censusCSV = new Gson().fromJson(sortedCensusData, CSVStateCensus[].class);
 		Assert.assertEquals("Bihar", censusCSV[0].state);
+	}
+	
+	@Test
+	public void givenCensusData_WhenSortedByAreaOfStateDescending_ShouldGiveSortedResult() throws CustomCSVBuilderException, CustomFileIOException, IOException {
+		StateCensusAnalyser stateCensusAnalyser = new StateCensusAnalyser();
+		MappingStrategy<CSVStateCensus> mappingStrategy = new HeaderColumnNameMappingStrategy<CSVStateCensus>();
+		mappingStrategy.setType(CSVStateCensus.class);
+		stateCensusAnalyser.loadStateCensusData(STATE_CENSUS_CSV_FILE, mappingStrategy, CSVStateCensus.class, ',');
+		String sortedCensusData = stateCensusAnalyser.getAreaWiseCensusDataAndWriteToJsonFile(JSON_FILE_PATH_TO_WRITE_SORTED_BY_AREA);
+		CSVStateCensus[] censusCSV = new Gson().fromJson(sortedCensusData, CSVStateCensus[].class);
+		Assert.assertEquals("Maharashtra", censusCSV[0].state);
 	}
 }

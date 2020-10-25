@@ -118,6 +118,11 @@ public class StateCensusAnalyser {
 		fileWriter.close();
 		return sortedStateCensus;
 	}
+
+	public String getAreaWiseCensusDataAndWriteToJsonFile(String jSON_FILE_PATH_TO_WRITE_SORTED_BY_AREA) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }
 
 
