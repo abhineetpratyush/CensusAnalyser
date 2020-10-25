@@ -1,6 +1,6 @@
 package com.capgemini.censusanalyser;
 
-import com.capgemini.commoncsvbuilder.*;
+import com.capgemini.opencsvbuilder.*;
 import org.junit.Assert;
 import org.junit.Test;
 import com.opencsv.bean.HeaderColumnNameMappingStrategy;
@@ -34,43 +34,43 @@ public class StateCodeTest {
 		Assert.assertEquals(ExceptionType.FILE_PROBLEM.toString(), exceptionMessage);
 	}
 	
-//	@Test
-//	public void givenIncorrectCSVType_ShouldReturnCustomException() throws CustomFileIOException {
-//		String exceptionMessage = null;
-//		try {
-//			StateCensusAnalyser stateCensusAnalyser = new StateCensusAnalyser();
-//			stateCensusAnalyser.loadStateCodeData(STATE_CODE_CSV_FILE, null, null, ',');
-//		} catch(CustomCSVBuilderException e) {
-//			exceptionMessage = e.getMessage();
-//		}
-//		Assert.assertEquals(ExceptionType.PARSE_PROBLEM.toString(), exceptionMessage);
-//	}
-//	
-//	@Test
-//	public void givenCorrectCSVFileIncorrectDelimiter_ShouldReturnCustomException() throws CustomFileIOException {
-//		String exceptionMessage = null;
-//		try {
-//			StateCensusAnalyser stateCensusAnalyser = new StateCensusAnalyser();
-//			MappingStrategy<CSVStates> mappingStrategy = new HeaderColumnNameMappingStrategy<CSVStates>();
-//			mappingStrategy.setType(CSVStates.class);
-//			stateCensusAnalyser.loadStateCodeData(STATE_CODE_CSV_FILE, mappingStrategy, CSVStates.class, '|');
-//		} catch(CustomCSVBuilderException e) {
-//			exceptionMessage = e.getMessage();
-//		}
-//		Assert.assertEquals(ExceptionType.HEADER_OR_DELIMITER_PROBLEM.toString(), exceptionMessage);
-//	}
-//	
-//	@Test
-//	public void givenCorrectCSVFileIncorrectHeader_ShouldReturnCustomException() throws CustomFileIOException {
-//		String exceptionMessage = null;
-//		try {
-//			StateCensusAnalyser stateCensusAnalyser = new StateCensusAnalyser();
-//			MappingStrategy<CSVStates> mappingStrategy = new HeaderColumnNameMappingStrategy<CSVStates>();
-//			mappingStrategy.setType(CSVStates.class);
-//			stateCensusAnalyser.loadStateCodeData(INCORRECT_HEADER_STATE_CODE_CSV_FILE, mappingStrategy, CSVStates.class, ',');
-//		} catch(CustomCSVBuilderException e) {
-//			exceptionMessage = e.getMessage();
-//		}
-//		Assert.assertEquals(ExceptionType.HEADER_OR_DELIMITER_PROBLEM.toString(), exceptionMessage);
-//	}
+	@Test
+	public void givenIncorrectCSVType_ShouldReturnCustomException() throws CustomFileIOException {
+		String exceptionMessage = null;
+		try {
+			StateCensusAnalyser stateCensusAnalyser = new StateCensusAnalyser();
+			stateCensusAnalyser.loadStateCodeData(STATE_CODE_CSV_FILE, null, null, ',');
+		} catch(CustomCSVBuilderException e) {
+			exceptionMessage = e.getMessage();
+		}
+		Assert.assertEquals(ExceptionType.PARSE_PROBLEM.toString(), exceptionMessage);
+	}
+	
+	@Test
+	public void givenCorrectCSVFileIncorrectDelimiter_ShouldReturnCustomException() throws CustomFileIOException {
+		String exceptionMessage = null;
+		try {
+			StateCensusAnalyser stateCensusAnalyser = new StateCensusAnalyser();
+			MappingStrategy<CSVStates> mappingStrategy = new HeaderColumnNameMappingStrategy<CSVStates>();
+			mappingStrategy.setType(CSVStates.class);
+			stateCensusAnalyser.loadStateCodeData(STATE_CODE_CSV_FILE, mappingStrategy, CSVStates.class, '|');
+		} catch(CustomCSVBuilderException e) {
+			exceptionMessage = e.getMessage();
+		}
+		Assert.assertEquals(ExceptionType.HEADER_OR_DELIMITER_PROBLEM.toString(), exceptionMessage);
+	}
+	
+	@Test
+	public void givenCorrectCSVFileIncorrectHeader_ShouldReturnCustomException() throws CustomFileIOException {
+		String exceptionMessage = null;
+		try {
+			StateCensusAnalyser stateCensusAnalyser = new StateCensusAnalyser();
+			MappingStrategy<CSVStates> mappingStrategy = new HeaderColumnNameMappingStrategy<CSVStates>();
+			mappingStrategy.setType(CSVStates.class);
+			stateCensusAnalyser.loadStateCodeData(INCORRECT_HEADER_STATE_CODE_CSV_FILE, mappingStrategy, CSVStates.class, ',');
+		} catch(CustomCSVBuilderException e) {
+			exceptionMessage = e.getMessage();
+		}
+		Assert.assertEquals(ExceptionType.HEADER_OR_DELIMITER_PROBLEM.toString(), exceptionMessage);
+	}
 }	
