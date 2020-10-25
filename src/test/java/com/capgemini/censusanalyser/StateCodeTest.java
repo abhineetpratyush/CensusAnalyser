@@ -1,6 +1,8 @@
 package com.capgemini.censusanalyser;
 
 import com.capgemini.opencsvbuilder.*;
+import com.google.gson.Gson;
+
 import org.junit.Assert;
 import org.junit.Test;
 import com.opencsv.bean.HeaderColumnNameMappingStrategy;
@@ -72,5 +74,16 @@ public class StateCodeTest {
 			exceptionMessage = e.getMessage();
 		}
 		Assert.assertEquals(ExceptionType.HEADER_OR_DELIMITER_PROBLEM.toString(), exceptionMessage);
+	}
+	
+	@Test
+	public void givenStateCodeData_WhenSortedAlphabeticallyOnCode_ShouldGiveSortedResult() throws CustomCSVBuilderException, CustomFileIOException {
+		StateCensusAnalyser stateCensusAnalyser = new StateCensusAnalyser();
+		MappingStrategy<CSVStates> mappingStrategy = new HeaderColumnNameMappingStrategy<CSVStates>();
+		mappingStrategy.setType(CSVStates.class);
+		stateCensusAnalyser.loadStateCodeData(STATE_CODE_CSV_FILE, mappingStrategy, CSVStates.class, ',');
+		String sortedCodeData = stateCensusAnalyser.getAlpahebeticalStateCodeWiseData();
+		CSVStates[] codeCSV = new Gson().fromJson(sortedCodeData, CSVStates[].class);
+		Assert.assertEquals("BR", codeCSV[0].code);
 	}
 }	

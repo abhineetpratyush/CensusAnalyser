@@ -63,4 +63,9 @@ public class StateCensusAnalyser {
 			}
 		}
 	}
+
+	public String getAlpahebeticalStateCodeWiseData() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }
