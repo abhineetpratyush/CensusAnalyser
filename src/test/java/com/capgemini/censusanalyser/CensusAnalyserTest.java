@@ -17,7 +17,7 @@ public class CensusAnalyserTest {
 	private final String JSON_FILE_PATH_TO_WRITE_SORTED_BY_POPULATION_DATA = "./src/main/resources/StateCensusDataSortedByPopulation.json";
 	private final String JSON_FILE_PATH_TO_WRITE_SORTED_BY_POPULATION_DENSITY = "./src/main/resources/StateCensusDataSortedByPopulationDensity.json";
 	private final String JSON_FILE_PATH_TO_WRITE_SORTED_BY_AREA = "./src/main/resources/StateCensusDataSortedByArea.json";
-	
+
 	@Test
 	public void givenTheStatesCensusCSVFile_WhenRead_NoOfRecordsShouldMatch() throws CustomFileIOException, CustomCSVBuilderException  {
 		StateCensusAnalyser stateCensusAnalyser = new StateCensusAnalyser();
@@ -40,7 +40,7 @@ public class CensusAnalyserTest {
 		}
 		Assert.assertEquals(ExceptionTypeIO.FILE_PROBLEM.toString(), exceptionMessage);
 	}
-	
+
 	@Test
 	public void givenIncorrectCSVType_ShouldReturnCustomException() throws CustomFileIOException {
 		String exceptionMessage = null;
@@ -52,7 +52,7 @@ public class CensusAnalyserTest {
 		}
 		Assert.assertEquals(ExceptionType.PARSE_PROBLEM.toString(), exceptionMessage);
 	}
-	
+
 	@Test
 	public void givenCorrectCSVFileIncorrectDelimiter_ShouldReturnCustomException() throws CustomFileIOException {
 		String exceptionMessage = null;
@@ -66,7 +66,7 @@ public class CensusAnalyserTest {
 		}
 		Assert.assertEquals(ExceptionType.HEADER_OR_DELIMITER_PROBLEM.toString(), exceptionMessage);
 	}
-	
+
 	@Test
 	public void givenCorrectCSVFileIncorrectHeader_ShouldReturnCustomException() throws CustomFileIOException {
 		String exceptionMessage = null;
@@ -80,7 +80,7 @@ public class CensusAnalyserTest {
 		}
 		Assert.assertEquals(ExceptionType.HEADER_OR_DELIMITER_PROBLEM.toString(), exceptionMessage);
 	}
-	
+
 	@Test
 	public void givenCensusData_WhenSortedAlphabetically_ShouldGiveSortedResult() throws CustomCSVBuilderException, CustomFileIOException {
 		StateCensusAnalyser stateCensusAnalyser = new StateCensusAnalyser();
@@ -91,7 +91,7 @@ public class CensusAnalyserTest {
 		CSVStateCensus[] censusCSV = new Gson().fromJson(sortedCensusData, CSVStateCensus[].class);
 		Assert.assertEquals("Assam", censusCSV[0].state);
 	}
-	
+
 	@Test
 	public void givenCensusData_WhenSortedByPopulationDescending_ShouldGiveSortedResult() throws CustomCSVBuilderException, CustomFileIOException, IOException {
 		StateCensusAnalyser stateCensusAnalyser = new StateCensusAnalyser();
@@ -102,7 +102,7 @@ public class CensusAnalyserTest {
 		CSVStateCensus[] censusCSV = new Gson().fromJson(sortedCensusData, CSVStateCensus[].class);
 		Assert.assertEquals("Uttar Pradesh", censusCSV[0].state);
 	}
-	
+
 	@Test
 	public void givenCensusData_WhenSortedByPopulationDensityDescending_ShouldGiveSortedResult() throws CustomCSVBuilderException, CustomFileIOException, IOException {
 		StateCensusAnalyser stateCensusAnalyser = new StateCensusAnalyser();
@@ -113,7 +113,7 @@ public class CensusAnalyserTest {
 		CSVStateCensus[] censusCSV = new Gson().fromJson(sortedCensusData, CSVStateCensus[].class);
 		Assert.assertEquals("Bihar", censusCSV[0].state);
 	}
-	
+
 	@Test
 	public void givenCensusData_WhenSortedByAreaOfStateDescending_ShouldGiveSortedResult() throws CustomCSVBuilderException, CustomFileIOException, IOException {
 		StateCensusAnalyser stateCensusAnalyser = new StateCensusAnalyser();

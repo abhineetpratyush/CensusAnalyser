@@ -14,10 +14,10 @@ import com.google.gson.Gson;
 import com.opencsv.bean.MappingStrategy;
 
 public class StateCensusAnalyser {
-	
+
 	List<CSVStateCensus> csvStateCensusList;
 	List<CSVStates> csvStateCodeList;
-	
+
 	public int loadStateCensusData(String csvFilePath, MappingStrategy<CSVStateCensus> mappingStrategy, Class<? extends CSVStateCensus> csvBinderClass, final char separator) throws CustomFileIOException, CustomCSVBuilderException {
 		try (Reader reader = Files.newBufferedReader(Paths.get(csvFilePath))){	
 			ICSVBuilder csvBuilder = new CSVBuilderFactory().createCSVBuilder();
@@ -45,11 +45,11 @@ public class StateCensusAnalyser {
 	}
 
 	public String getAlpahebeticalStateWiseCensusData(){	
-			Comparator<CSVStateCensus> censusComparator = Comparator.comparing(census -> census.state);
-			this.sort(censusComparator);
-			String sortedStateCensus = new Gson().toJson(csvStateCensusList);
-			return sortedStateCensus;
-		}  
+		Comparator<CSVStateCensus> censusComparator = Comparator.comparing(census -> census.state);
+		this.sort(censusComparator);
+		String sortedStateCensus = new Gson().toJson(csvStateCensusList);
+		return sortedStateCensus;
+	}  
 
 	private void sort(Comparator<CSVStateCensus> censusComparator) {
 		for(int i = 0; i < csvStateCensusList.size(); i++) {
@@ -63,7 +63,7 @@ public class StateCensusAnalyser {
 			}
 		}
 	}
-	
+
 	private void sortDescending(Comparator<CSVStateCensus> censusComparator) {
 		for(int i = 0; i < csvStateCensusList.size(); i++) {
 			for(int j = 0; j < csvStateCensusList.size() - i- 1; j++) {
@@ -95,7 +95,7 @@ public class StateCensusAnalyser {
 				}
 			}
 		}
-		
+
 	}
 
 	public String getPopulationWiseCensusDataAndWriteToJsonFile(String jsonFilePath) throws IOException {
@@ -119,9 +119,14 @@ public class StateCensusAnalyser {
 		return sortedStateCensus;
 	}
 
-	public String getAreaWiseCensusDataAndWriteToJsonFile(String jSON_FILE_PATH_TO_WRITE_SORTED_BY_AREA) {
-		// TODO Auto-generated method stub
-		return null;
+	public String getAreaWiseCensusDataAndWriteToJsonFile(String jsonFilePath) throws IOException {
+		FileWriter fileWriter = new FileWriter(jsonFilePath);
+		Comparator<CSVStateCensus> censusComparator = Comparator.comparing(census -> census.areaInSqKm);
+		this.sortDescending(censusComparator);
+		String sortedStateCensus = new Gson().toJson(csvStateCensusList);
+		fileWriter.write(sortedStateCensus);
+		fileWriter.close();
+		return sortedStateCensus;
 	}
 }
 

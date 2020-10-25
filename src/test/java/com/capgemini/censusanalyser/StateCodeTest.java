@@ -35,7 +35,7 @@ public class StateCodeTest {
 		}
 		Assert.assertEquals(ExceptionType.FILE_PROBLEM.toString(), exceptionMessage);
 	}
-	
+
 	@Test
 	public void givenIncorrectCSVType_ShouldReturnCustomException() throws CustomFileIOException {
 		String exceptionMessage = null;
@@ -47,7 +47,7 @@ public class StateCodeTest {
 		}
 		Assert.assertEquals(ExceptionType.PARSE_PROBLEM.toString(), exceptionMessage);
 	}
-	
+
 	@Test
 	public void givenCorrectCSVFileIncorrectDelimiter_ShouldReturnCustomException() throws CustomFileIOException {
 		String exceptionMessage = null;
@@ -61,7 +61,7 @@ public class StateCodeTest {
 		}
 		Assert.assertEquals(ExceptionType.HEADER_OR_DELIMITER_PROBLEM.toString(), exceptionMessage);
 	}
-	
+
 	@Test
 	public void givenCorrectCSVFileIncorrectHeader_ShouldReturnCustomException() throws CustomFileIOException {
 		String exceptionMessage = null;
@@ -75,7 +75,7 @@ public class StateCodeTest {
 		}
 		Assert.assertEquals(ExceptionType.HEADER_OR_DELIMITER_PROBLEM.toString(), exceptionMessage);
 	}
-	
+
 	@Test
 	public void givenStateCodeData_WhenSortedAlphabeticallyOnCode_ShouldGiveSortedResult() throws CustomCSVBuilderException, CustomFileIOException {
 		StateCensusAnalyser stateCensusAnalyser = new StateCensusAnalyser();
