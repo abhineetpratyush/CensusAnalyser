@@ -1,5 +1,6 @@
 package com.capgemini.censusanalyser;
 
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Reader;
 import java.nio.file.Files;
@@ -97,10 +98,16 @@ public class StateCensusAnalyser {
 		
 	}
 
-	public String getPopulationWiseCensusData() {
+	public String getPopulationWiseCensusDataAndWriteToJsonFile(String jsonFilePath) throws IOException {
+		FileWriter fileWriter = new FileWriter(jsonFilePath);
 		Comparator<CSVStateCensus> censusComparator = Comparator.comparing(census -> census.population);
 		this.sortDescending(censusComparator);
 		String sortedStateCensus = new Gson().toJson(csvStateCensusList);
+		fileWriter.write(sortedStateCensus);
+		fileWriter.close();
 		return sortedStateCensus;
 	}
 }
+
+
+
