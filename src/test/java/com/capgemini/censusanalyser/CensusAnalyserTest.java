@@ -81,7 +81,8 @@ public class CensusAnalyserTest {
 		StateCensusAnalyser stateCensusAnalyser = new StateCensusAnalyser();
 		MappingStrategy<CSVStateCensus> mappingStrategy = new HeaderColumnNameMappingStrategy<CSVStateCensus>();
 		mappingStrategy.setType(CSVStateCensus.class);
-		String sortedCensusData = stateCensusAnalyser.getAlpahebeticalStateWiseCensusData(STATE_CENSUS_CSV_FILE, mappingStrategy, CSVStateCensus.class, ',');
+		stateCensusAnalyser.loadStateCensusData(STATE_CENSUS_CSV_FILE, mappingStrategy, CSVStateCensus.class, ',');
+		String sortedCensusData = stateCensusAnalyser.getAlpahebeticalStateWiseCensusData();
 		CSVStateCensus[] censusCSV = new Gson().fromJson(sortedCensusData, CSVStateCensus[].class);
 		Assert.assertEquals("Assam", censusCSV[0].state);
 	}
